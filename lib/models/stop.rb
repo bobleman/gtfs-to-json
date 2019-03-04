@@ -15,7 +15,7 @@ class Stop
     result  = {}
 
     # Include distance if there's a value
-    if distance > 0
+    if distance && distance > 0
       options[:methods] = [ :distance ]
     end
 

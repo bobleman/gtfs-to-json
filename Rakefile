@@ -138,6 +138,51 @@ task :bus_time do
   # end
 end
 
+task :save_json do
+  @routes = Route.all
+  File.open("json/routes.json","w") do |f|
+    f.write(@routes.to_json)
+  end
+
+  @buses = Bus.all
+  File.open("json/buses.json","w") do |f|
+    f.write(@buses.to_json)
+  end
+
+  @stops = Stop.all
+  File.open("json/stops.json","w") do |f|
+    f.write(@stops.to_json)
+  end
+end
+
+task :save_spb do
+  File.open("spb/routes.txt","r") do |f|
+    f.each do |line|
+      puts line
+      array = line.split(',')
+      route = Route.new
+      route.route_id = array[0]
+      route.route_number = array[2]
+      route.route_name = array[3]
+      route.save
+    end
+  end
+
+  File.open("spb/stops.txt","r") do |f|
+    f.each do |line|
+      puts line
+      array = line.split(',')
+      stop = Stop.new
+      stop.stop_id = array[0]
+      stop.stop_code = array[1]
+      stop.stop_name = array[2]
+      stop.lat = array[3]
+      stop.lon = array[4]
+      stop.save
+    end
+  end
+end
+
 desc "Show help menu"
 task :help do
   puts "Available rake tasks: "
